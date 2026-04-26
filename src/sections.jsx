@@ -342,12 +342,14 @@ const Work = () => (
     </div>
 
     <div className="grid grid-cols-12 gap-4 auto-rows-[140px]">
-      <VideoTile src="605-Branding.mp4" title="605 Brand Reel" client="605 Agency" year="’25" category="Brend rili" span="col-span-12 md:col-span-8 row-span-3 md:row-span-4" large/>
-      <VideoTile src="4-mefortg.mp4" title="Odilbekova Promo" client="@odilbekovva" year="’24" category="Instagram Reel" span="col-span-12 md:col-span-4 row-span-4"/>
-      <VideoTile src="AQNBGsao1FSHXxlFW7_cs26nRF_ig4DV5jeRUEabyqe5Ep0qpEhhYOAqllXjiAD.mp4" title="Yusuf Inspire Reel" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
-      <VideoTile src="AQO6sWjMKyvkrzRrw8z_VJVBxvMMbml4OYmeMZr3Gmuhn8uSrM86d87nedZmd_h.mp4" title="Yusuf Inspire Motion" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
-      <VideoTile src="AQO8jSCn4cGbejgB6EXSnY3SNBQaExPjyQbyaKmwd9jTsOcHXkk0wJL6yZFmmu8.mp4" title="Millat Umidi Promo" client="Millat Umidi Univ." year="’24" category="Motion Video" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
-      <VideoTile src="SaveInta_com_AQNnbdIG6N4a2qw9wjt12F87bm_I2jTXSkpfGSUl6Q_YENrVBGDvSGpnPqNY8tT.mp4" title="Millat Umidi Reel" client="Millat Umidi Univ." year="’24" category="Promo" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
+      <VideoTile src="605-Branding.mp4" title="605 Brand Reel" client="605 Agency" year="’25" category="Brend rili" span="col-span-12 md:col-span-8 row-span-2 md:row-span-3" large/>
+      <VideoTile src="4-mefortg.mp4" title="Odilbekova Promo" client="@odilbekovva" year="’24" category="Instagram Reel" span="col-span-6 md:col-span-4 row-span-3"/>
+      
+      <VideoTile src="AQNBGsao1FSHXxlFW7_cs26nRF_ig4DV5jeRUEabyqe5Ep0qpEhhYOAqllXjiAD.mp4" title="Yusuf Inspire Reel" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-3"/>
+      <VideoTile src="AQO6sWjMKyvkrzRrw8z_VJVBxvMMbml4OYmeMZr3Gmuhn8uSrM86d87nedZmd_h.mp4" title="Yusuf Inspire Motion" client="@yusuf.inspire" year="’24" category="Motion Design" span="col-span-12 md:col-span-6 row-span-2 md:row-span-3" large/>
+      <VideoTile src="AQO8jSCn4cGbejgB6EXSnY3SNBQaExPjyQbyaKmwd9jTsOcHXkk0wJL6yZFmmu8.mp4" title="Millat Umidi Promo" client="Millat Umidi Univ." year="’24" category="Motion Video" span="col-span-6 md:col-span-3 row-span-3"/>
+      
+      <VideoTile src="SaveInta_com_AQNnbdIG6N4a2qw9wjt12F87bm_I2jTXSkpfGSUl6Q_YENrVBGDvSGpnPqNY8tT.mp4" title="Millat Umidi Reel" client="Millat Umidi Univ." year="’24" category="Promo" span="col-span-6 md:col-span-4 md:col-start-5 row-span-3"/>
     </div>
   </section>
 );
