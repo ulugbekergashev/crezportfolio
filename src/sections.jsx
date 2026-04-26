@@ -170,7 +170,7 @@ const Hero = () => {
             Motion Designer <span className="accent">×</span> 3D Artist <span className="accent">×</span> Video Editor
           </div>
           <div className="ink-dim mt-3 max-w-xl">
-            Muhammadamin — 21 yoshli vizual hikoyachi, Toshkentdan turib kinetik filmlar, 3D olamlar va brend-rillarni yaratadi.
+            Muhammadamin — 21 yoshli motion animator
           </div>
         </div>
         <div className="flex md:justify-end">
@@ -204,7 +204,7 @@ const About = () => {
           O'zbekistondan 21 yoshli vizual hikoyachi — g'oyalarni harakatga <span className="accent">aylantiraman</span>.
         </h2>
         <p className="ink-dim text-lg max-w-xl mt-8 leading-relaxed">
-          Men Muhammadamin, CREZ taxallusi bilan tanilganman. Rejissyorlikdan tortib har bir kadrni animatsiya qilishgacha bo'lgan jarayonni o'z bo'ynimga olaman — Blender va 3ds Max'dagi 3D vizualizatsiyadan tortib, DaVinci Resolve'dagi tijoriy rang berishgacha. Mening ishlarim tipografiya, tekstura va vaqt uyg'unligida tug'iladi.
+          Men video animator montajorman. Rejissyorlikdan tortib har bir kadrni animatsiya qilishgacha bo‘lgan jarayonni o‘z bo‘ynimga olaman — vizualizatsiyadan tortib yakuniy ishlovgacha. Mening ishlarim tipografiya, tekstura va vaqt uyg‘unligida tug‘iladi.
         </p>
       </div>
       <div className="md:col-span-3 reveal reveal-delay-2">
@@ -225,7 +225,7 @@ const About = () => {
       <div className="flex whitespace-nowrap marquee-l">
         {Array.from({length:2}).map((_,k)=>(
           <div key={k} className="flex gap-12 pr-12 font-display text-7xl md:text-9xl">
-            <span>HARAKAT</span><span className="accent">·</span>
+            <span>ANIMATSIYA</span><span className="accent">·</span>
             <span>3D</span><span className="accent">·</span>
             <span>BREND</span><span className="accent">·</span>
             <span>FILM</span><span className="accent">·</span>
@@ -296,41 +296,39 @@ const SkillCard = ({ name, level, kind, idx }) => {
 const Skills = () => (
   <section className="px-6 md:px-12 py-32 border-t border-line">
     <div className="grid md:grid-cols-12 gap-10 mb-16">
-      <div className="md:col-span-2"><div className="eyebrow">(03) — Arsenal</div></div>
+      <div className="md:col-span-2"><div className="eyebrow">(03) — Skillar</div></div>
       <div className="md:col-span-10 reveal">
-        <h2 className="font-display text-5xl md:text-7xl leading-[.95]">Arsenal —<br/><span className="accent">harakat</span> uchun yaratilgan.</h2>
+        <h2 className="font-display text-5xl md:text-7xl leading-[.95]">Skilllar —<br/><span className="accent">to'liq</span>.</h2>
       </div>
     </div>
     <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
       <SkillCard name="After Effects" level={95} kind="Compositing" idx={0}/>
-      <SkillCard name="DaVinci Resolve" level={88} kind="Edit · Grade" idx={1}/>
-      <SkillCard name="Blender 3D" level={90} kind="3D · Render" idx={2}/>
-      <SkillCard name="3ds Max" level={82} kind="Modelling" idx={3}/>
-      <SkillCard name="3D Animation" level={87} kind="Discipline" idx={4}/>
+      <SkillCard name="DaVinci Resolve" level={70} kind="Edit · Grade" idx={1}/>
+      <SkillCard name="Blender 3D" level={60} kind="3D · Render" idx={2}/>
+      <SkillCard name="3ds Max" level={60} kind="Modelling" idx={3}/>
+      <SkillCard name="3D Animation" level={50} kind="Discipline" idx={4}/>
     </div>
   </section>
 );
 
 // ---------- Work / Bento ----------
-const ProjectTile = ({ Reel, title, client, year, category, url, span = '', large = false }) => (
-  <a href={url} target="_blank" rel="noopener noreferrer"
-     className={`reel-card group reveal ${span} block`}>
-    <Reel/>
-    <div className="scanline"/>
-    <div className="play-tag flex items-center gap-2"><span className="live-dot"/> {category}</div>
-    <div className="absolute top-4 right-4 font-mono text-[10px] ink-dim flex items-center gap-2">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="opacity-80"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.6 12 3.6 12 3.6s-7.6 0-9.4.5A3 3 0 0 0 .5 6.2C0 8 0 12 0 12s0 4 .5 5.8a3 3 0 0 0 2.1 2.1c1.8.5 9.4.5 9.4.5s7.6 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 16 24 12 24 12s0-4-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+const VideoTile = ({ src, title, client, year, category, span = '', large = false }) => (
+  <div className={`reel-card group reveal ${span} block relative overflow-hidden bg-black`}>
+    <video src={src} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-700" />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"/>
+    <div className="scanline pointer-events-none"/>
+    <div className="play-tag flex items-center gap-2 pointer-events-none"><span className="live-dot"/> {category}</div>
+    <div className="absolute top-4 right-4 font-mono text-[10px] ink-dim flex items-center gap-2 pointer-events-none">
       <span>{year}</span>
     </div>
-    <div className="reel-overlay">
+    <div className="reel-overlay z-10 pointer-events-none">
       <div className="font-mono text-[10px] uppercase tracking-[.22em] accent mb-2">{client}</div>
-      <div className={`font-display ${large ? 'text-5xl md:text-7xl' : 'text-3xl md:text-4xl'} leading-[.95]`}>{title}</div>
+      <div className={`font-display ${large ? 'text-5xl md:text-7xl' : 'text-3xl md:text-4xl'} leading-[.95] text-white`}>{title}</div>
       <div className="flex justify-between items-end mt-6">
-        <div className="font-mono text-[10px] ink-dim flex items-center gap-1">▶ YouTube'da ko'rish ↗</div>
         <div className="font-mono text-[10px] ink-dim">{category} · {year}</div>
       </div>
     </div>
-  </a>
+  </div>
 );
 
 const Work = () => (
@@ -338,20 +336,18 @@ const Work = () => (
     <div className="grid md:grid-cols-12 gap-10 mb-12">
       <div className="md:col-span-2"><div className="eyebrow">(04) — Tanlangan ishlar</div></div>
       <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
-        <h2 className="font-display text-5xl md:text-8xl leading-[.92]">Harakatdagi<br/><span className="accent">kadrlar</span>.</h2>
-        <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em]">2023 — 2026 / 120 tadan 08 tasi</div>
+        <h2 className="font-display text-5xl md:text-8xl leading-[.92]">Ishlardan<br/><span className="accent">bir parcha</span>.</h2>
+        <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em]">2023 — 2026 / 120 tadan 06 tasi</div>
       </div>
     </div>
 
     <div className="grid grid-cols-12 gap-4 auto-rows-[140px]">
-      <ProjectTile Reel={ReelGradient} url="https://youtube.com/@crez" title="Refresh the Beat" client="Pepsi" year="’24" category="Reklama" span="col-span-12 md:col-span-7 row-span-3" large/>
-      <ProjectTile Reel={Reel3D}      url="https://youtube.com/@crez" title="Honor // Product Viz" client="Honor Uzbekistan" year="’25" category="3D Animatsiya" span="col-span-12 md:col-span-5 row-span-2"/>
-      <ProjectTile Reel={ReelType}    url="https://youtube.com/@crez" title="605 Brand Reel" client="605 Agency" year="’25" category="Brend rili" span="col-span-6 md:col-span-3 row-span-2"/>
-      <ProjectTile Reel={ReelLogo}    url="https://youtube.com/@crez" title="Lipton Loop" client="Lipton" year="’24" category="Logotip animatsiyasi" span="col-span-6 md:col-span-2 row-span-2"/>
-      <ProjectTile Reel={ReelGrid}    url="https://youtube.com/@crez" title="Bashkent Ident" client="Bashkent" year="’24" category="3D · Ident" span="col-span-6 md:col-span-4 row-span-2"/>
-      <ProjectTile Reel={ReelOrbit}   url="https://youtube.com/@crez" title="Bloger Orbit" client="Bloger Agency" year="’25" category="VFX" span="col-span-6 md:col-span-4 row-span-2"/>
-      <ProjectTile Reel={ReelWave}    url="https://youtube.com/@crez" title="Millat Umidi // Audio Reel" client="Millat Umidi Univ." year="’23" category="Ovoz · Montaj" span="col-span-6 md:col-span-4 row-span-2"/>
-      <ProjectTile Reel={ReelVFX}     url="https://youtube.com/@crez" title="TAFU Particles" client="Toshkent Amaliy Fanlar" year="’23" category="VFX" span="col-span-12 md:col-span-12 row-span-2"/>
+      <VideoTile src="605-Branding.mp4" title="605 Brand Reel" client="605 Agency" year="’25" category="Brend rili" span="col-span-12 md:col-span-8 row-span-3 md:row-span-4" large/>
+      <VideoTile src="4-mefortg.mp4" title="Odilbekova Promo" client="@odilbekovva" year="’24" category="Instagram Reel" span="col-span-12 md:col-span-4 row-span-4"/>
+      <VideoTile src="AQNBGsao1FSHXxlFW7_cs26nRF_ig4DV5jeRUEabyqe5Ep0qpEhhYOAqllXjiAD.mp4" title="Yusuf Inspire Reel" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
+      <VideoTile src="AQO6sWjMKyvkrzRrw8z_VJVBxvMMbml4OYmeMZr3Gmuhn8uSrM86d87nedZmd_h.mp4" title="Yusuf Inspire Motion" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
+      <VideoTile src="AQO8jSCn4cGbejgB6EXSnY3SNBQaExPjyQbyaKmwd9jTsOcHXkk0wJL6yZFmmu8.mp4" title="Millat Umidi Promo" client="Millat Umidi Univ." year="’24" category="Motion Video" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
+      <VideoTile src="SaveInta_com_AQNnbdIG6N4a2qw9wjt12F87bm_I2jTXSkpfGSUl6Q_YENrVBGDvSGpnPqNY8tT.mp4" title="Millat Umidi Reel" client="Millat Umidi Univ." year="’24" category="Promo" span="col-span-6 md:col-span-3 row-span-3 md:row-span-4"/>
     </div>
   </section>
 );
@@ -448,7 +444,7 @@ const Process = () => {
 };
 
 // ---------- Pricing ----------
-const PricingCard = ({ tier, price, tagline, features, accent: isAccent, idx }) => (
+const PricingCard = ({ tier, price, tagline, features, accent: isAccent, idx, unit = 'reels' }) => (
   <div className={`reveal relative rounded-2xl p-6 md:p-8 border ${isAccent ? 'border-[var(--accent)]' : 'border-line'} overflow-hidden tilt`}
        style={{transitionDelay:`${idx*120}ms`, background: isAccent ? 'linear-gradient(180deg, rgba(198,255,0,.08), transparent)' : 'linear-gradient(180deg, rgba(255,255,255,.02), transparent)'}}>
     {isAccent && (
@@ -459,7 +455,7 @@ const PricingCard = ({ tier, price, tagline, features, accent: isAccent, idx }) 
       <div className="font-display text-[100px] md:text-[140px] leading-[.85]">
         <span className={isAccent ? 'accent' : ''}>${price}</span>
       </div>
-      <div className="font-mono text-[11px] ink-dim mb-6 uppercase tracking-[.18em]">/ reels</div>
+      <div className="font-mono text-[11px] ink-dim mb-6 uppercase tracking-[.18em]">/ {unit}</div>
     </div>
     <p className="ink-dim mt-2 mb-8 leading-relaxed">{tagline}</p>
     <div className="border-t border-line pt-6 space-y-3">
@@ -485,24 +481,24 @@ const Pricing = () => (
     <div className="grid md:grid-cols-12 gap-10 mb-16">
       <div className="md:col-span-2"><div className="eyebrow">(06) — Narxlar</div></div>
       <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
-        <h2 className="font-display text-5xl md:text-7xl leading-[.95]">Men bilan ishlashning<br/><span className="accent">ikki yo'li</span>.</h2>
+        <h2 className="font-display text-5xl md:text-7xl leading-[.95]">Men bilan ishlashning<br/><span className="accent">to'rt yo'li</span>.</h2>
         <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em] max-w-xs">
           Ruxsat etilgan narxlar · 100% oldindan to'lov · Tuzatishlar kiritilgan
         </div>
       </div>
     </div>
 
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
       <PricingCard
         tier="Standart"
         price="25"
         tagline="Ijtimoiy tarmoqlar, logotip animatsiyalari va qisqa rillar uchun tezkor yechim. Bitta topshiriq uchun ideal."
         features={[
-          '15 soniyagacha bo\'lgan video',
+          '1 minutgacha bo\'lgan video',
           '1 ta konsept yo\'nalishi',
           '2 marta tuzatish kiritish',
           '1080p · MP4 + MOV eksport',
-          'Tayyor bo\'lish muddati: 3-5 kun',
+          'Tayyor bo\'lish muddati: 1 kun',
           'Mualliflik huquqisiz musiqa',
         ]}
         idx={0}
@@ -513,15 +509,44 @@ const Pricing = () => (
         tagline="To'liq kreativ ishlab chiqarish — 3D, brend-rillar, reklamalar. Konseptdan yetkazib berishgacha."
         accent
         features={[
-          '60 soniyagacha video / 3D',
+          '1.5 minutgacha video / 3D',
           'Tanlash uchun 2 ta konsept yo\'nalishi',
           'Cheksiz tuzatishlar',
           '4K · barcha o\'lchamlarda (16:9 · 9:16 · 1:1)',
           'Sound dizayn + individual rang berish',
-          'Asl fayllar (.aep / .blend) taqdim etiladi',
-          'Navbatdan tashqari: 2-4 kunda tayyor',
+          'Asl fayllar (.aep / .blend) taqdim etiladi (xohishiy)',
+          'Navbatdan tashqari: 1 kunda tayyor',
         ]}
         idx={1}
+      />
+      <PricingCard
+        tier="YouTube"
+        price="80"
+        unit="video"
+        tagline="Uzun formatli videolar uchun professional montaj va motion dizayn. (Narxlar vaziyatga qarab o'zgaradi)"
+        features={[
+          '15 minutgacha bo\'lgan video',
+          'O\'rtacha darajadagi motion',
+          'Professional montaj va rang',
+          'Mavzuga mos animatsiyalar',
+          'Tayyor bo\'lish: Kelishiladi',
+        ]}
+        idx={2}
+      />
+      <PricingCard
+        tier="Promo"
+        price="100"
+        unit="rolik"
+        tagline="To'liq metrajli professional promo roliklar — brendingiz uchun eng yuqori sifat. (Narxlar vaziyatga qarab o'zgaradi)"
+        features={[
+          'Full motion dizayn',
+          '1-2 haftada tayyor bo\'ladi',
+          'Professional sound dizayn',
+          'To\'liq dizaynerlik ishi',
+          '10 tagacha tuzatish kiritish',
+          'Premium sifat va yondashuv',
+        ]}
+        idx={3}
       />
     </div>
 
@@ -566,9 +591,9 @@ const Contact = () => (
       <div className="md:col-span-7 reveal reveal-delay-1">
         <div className="eyebrow mb-6">Kanallar</div>
         <div className="space-y-5">
-          <MagneticLink href="mailto:hello@crez.studio">hello@crez.studio</MagneticLink><br/>
-          <MagneticLink href="#">@crez.motion — Instagram</MagneticLink><br/>
-          <MagneticLink href="#">@crez_studio — Telegram</MagneticLink>
+          <MagneticLink href="mailto:salyamovcrez@gmail.com">salyamovcrez@gmail.com</MagneticLink><br/>
+          <MagneticLink href="https://instagram.com/salyamov_vd">@salyamov_vd — Instagram</MagneticLink><br/>
+          <MagneticLink href="https://t.me/crez_vd">@crez_vd — Telegram</MagneticLink>
         </div>
       </div>
       <div className="md:col-span-5 reveal reveal-delay-2">
@@ -578,7 +603,7 @@ const Contact = () => (
           <div>UTC +05:00</div>
           <div className="ink">Mavjud xizmatlar: brend filmlari, 3D reklamalar, logotip tizimlari, motion identika, post-produksiya.</div>
         </div>
-        <a href="mailto:hello@crez.studio" className="cta-btn group inline-flex items-center gap-3 mt-10 font-mono text-[11px] uppercase tracking-[.18em] border border-accent rounded-full px-6 py-4 bg-accent text-black hover:bg-transparent hover:text-[var(--accent)] transition">
+        <a href="https://t.me/crez_vd" className="cta-btn group inline-flex items-center gap-3 mt-10 font-mono text-[11px] uppercase tracking-[.18em] border border-accent rounded-full px-6 py-4 bg-accent text-black hover:bg-transparent hover:text-[var(--accent)] transition">
           Loyihani boshlash <span className="cta-arrow inline-block">↗</span>
         </a>
       </div>
