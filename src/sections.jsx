@@ -342,14 +342,13 @@ const Work = () => (
     </div>
 
     <div className="grid grid-cols-12 gap-4 auto-rows-[140px]">
-      <VideoTile src="605-Branding.mp4" title="605 Brand Reel" client="605 Agency" year="’25" category="Brend rili" span="col-span-12 md:col-span-8 row-span-2 md:row-span-3" large/>
-      <VideoTile src="4-mefortg.mp4" title="Odilbekova Promo" client="@odilbekovva" year="’24" category="Instagram Reel" span="col-span-6 md:col-span-4 row-span-3"/>
-      
-      <VideoTile src="AQNBGsao1FSHXxlFW7_cs26nRF_ig4DV5jeRUEabyqe5Ep0qpEhhYOAqllXjiAD.mp4" title="Yusuf Inspire Reel" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-3"/>
+      <VideoTile src="605-Branding.mp4" title="605 Brand Reel" client="605 Agency" year="’25" category="Brend rili" span="col-span-12 md:col-span-6 row-span-2 md:row-span-3" large/>
       <VideoTile src="AQO6sWjMKyvkrzRrw8z_VJVBxvMMbml4OYmeMZr3Gmuhn8uSrM86d87nedZmd_h.mp4" title="Yusuf Inspire Motion" client="@yusuf.inspire" year="’24" category="Motion Design" span="col-span-12 md:col-span-6 row-span-2 md:row-span-3" large/>
-      <VideoTile src="AQO8jSCn4cGbejgB6EXSnY3SNBQaExPjyQbyaKmwd9jTsOcHXkk0wJL6yZFmmu8.mp4" title="Millat Umidi Promo" client="Millat Umidi Univ." year="’24" category="Motion Video" span="col-span-6 md:col-span-3 row-span-3"/>
       
-      <VideoTile src="SaveInta_com_AQNnbdIG6N4a2qw9wjt12F87bm_I2jTXSkpfGSUl6Q_YENrVBGDvSGpnPqNY8tT.mp4" title="Millat Umidi Reel" client="Millat Umidi Univ." year="’24" category="Promo" span="col-span-6 md:col-span-4 md:col-start-5 row-span-3"/>
+      <VideoTile src="4-mefortg.mp4" title="Odilbekova Promo" client="@odilbekovva" year="’24" category="Instagram Reel" span="col-span-6 md:col-span-3 row-span-4"/>
+      <VideoTile src="AQNBGsao1FSHXxlFW7_cs26nRF_ig4DV5jeRUEabyqe5Ep0qpEhhYOAqllXjiAD.mp4" title="Yusuf Inspire Reel" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-4"/>
+      <VideoTile src="AQO8jSCn4cGbejgB6EXSnY3SNBQaExPjyQbyaKmwd9jTsOcHXkk0wJL6yZFmmu8.mp4" title="Millat Umidi Promo" client="Millat Umidi Univ." year="’24" category="Motion Video" span="col-span-6 md:col-span-3 row-span-4"/>
+      <VideoTile src="SaveInta_com_AQNnbdIG6N4a2qw9wjt12F87bm_I2jTXSkpfGSUl6Q_YENrVBGDvSGpnPqNY8tT.mp4" title="Millat Umidi Reel" client="Millat Umidi Univ." year="’24" category="Promo" span="col-span-6 md:col-span-3 row-span-4"/>
     </div>
   </section>
 );
@@ -404,6 +403,174 @@ const Clients = () => {
   );
 };
 
+// ---------- Testimonials ----------
+const Testimonials = () => {
+  const reviews = [
+    { text: "manam xursandman siz bilan ishlaganimdan, kutganimdan ancha yaxshi narsa qilib berayabsiz", label: "MIJOZ 01" },
+    { text: "Raxmat bro, ishlariz Juda yoqayabdi, Juda zo'r", label: "MIJOZ 02" },
+    { text: "Siz bilan ishlab mazza qildim! shu vaqtgacha xech qaysi montajor bilan bunaqa ishlanagan edim, raxmat", label: "MIJOZ 03" },
+    { text: "Ishlariz darajasi boshqacha ekan, bunaqa sifat kutmagandim. Juda professional ishlayabsi, respect.", label: "MIJOZ 04" },
+  ];
+  const [idx, setIdx] = React.useState(0);
+  const [dragStart, setDragStart] = React.useState(null);
+  const [dragDelta, setDragDelta] = React.useState(0);
+  const n = reviews.length;
+
+  const goTo = (i) => setIdx((i + n) % n);
+  const next = React.useCallback(() => goTo(idx + 1), [idx]);
+  const prev = () => goTo(idx - 1);
+
+  React.useEffect(() => {
+    if (dragStart !== null) return;
+    const t = setInterval(() => setIdx(c => (c + 1) % n), 4500);
+    return () => clearInterval(t);
+  }, [dragStart, n]);
+
+  const getX = (e) => e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+
+  const onStart = (e) => { setDragStart(getX(e)); setDragDelta(0); };
+  const onMove  = (e) => { if (dragStart === null) return; setDragDelta(getX(e) - dragStart); };
+  const onEnd   = () => {
+    if (dragStart === null) return;
+    if (dragDelta < -60) goTo(idx + 1);
+    else if (dragDelta > 60) goTo(idx - 1);
+    setDragStart(null);
+    setDragDelta(0);
+  };
+
+  const cardW = 75; // vw per card
+  const gap = 2;    // vw gap
+
+  return (
+    <section id="testimonials" className="py-32 border-t border-line overflow-hidden">
+      {/* Header */}
+      <div className="px-6 md:px-12 grid md:grid-cols-12 gap-10 mb-14">
+        <div className="md:col-span-2"><div className="eyebrow">(06) — Mijozlar fikri</div></div>
+        <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
+          <h2 className="font-display text-5xl md:text-7xl leading-[.95]">
+            Mijozlar nima <span className="accent">deydi?</span>
+          </h2>
+          <div className="flex items-center gap-5">
+            <span className="font-mono text-[11px] ink-dim tracking-[.18em] uppercase">
+              <span className="accent">{String(idx+1).padStart(2,'0')}</span> / {String(n).padStart(2,'0')}
+            </span>
+            <div className="flex gap-3">
+              <button onClick={prev}
+                className="w-11 h-11 rounded-full border border-line flex items-center justify-center hover:bg-accent hover:text-black hover:border-accent transition-all duration-300 cursor-pointer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button onClick={next}
+                className="w-11 h-11 rounded-full border border-line flex items-center justify-center hover:bg-accent hover:text-black hover:border-accent transition-all duration-300 cursor-pointer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sliding track */}
+      <div
+        className="reveal"
+        style={{ cursor: dragStart !== null ? 'grabbing' : 'grab', userSelect: 'none' }}
+        onMouseDown={onStart} onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}
+        onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}
+      >
+        <div
+          style={{
+            display: 'flex',
+            gap: `${gap}vw`,
+            paddingLeft: '6vw',
+            transform: `translateX(calc(${-idx * (cardW + gap)}vw + ${dragDelta}px))`,
+            transition: dragStart !== null ? 'none' : 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)',
+            willChange: 'transform',
+          }}
+        >
+          {reviews.map((r, i) => {
+            const isActive = i === idx;
+            return (
+              <div
+                key={i}
+                onClick={() => setIdx(i)}
+                style={{
+                  flexShrink: 0,
+                  width: `${cardW}vw`,
+                  minHeight: 320,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 24,
+                  padding: '44px 48px 36px',
+                  borderRadius: 20,
+                  border: `1px solid ${isActive ? 'var(--accent)' : 'var(--line)'}`,
+                  background: isActive
+                    ? 'linear-gradient(135deg, rgba(198,255,0,.07), rgba(198,255,0,.02))'
+                    : 'linear-gradient(180deg, rgba(255,255,255,.018), transparent)',
+                  boxShadow: isActive ? '0 0 80px rgba(198,255,0,.1)' : 'none',
+                  opacity: isActive ? 1 : 0.45,
+                  transform: isActive ? 'scale(1)' : 'scale(0.97)',
+                  transition: 'border-color .5s, background .5s, box-shadow .5s, opacity .5s, transform .5s',
+                  cursor: isActive ? 'grab' : 'pointer',
+                }}
+              >
+                {/* Giant quote mark */}
+                <div style={{
+                  fontFamily: "'Anton','Bebas Neue',sans-serif",
+                  fontSize: 100,
+                  lineHeight: 0.5,
+                  color: isActive ? 'var(--accent)' : 'var(--line)',
+                  transition: 'color .5s',
+                  pointerEvents: 'none',
+                }}>"</div>
+
+                {/* Quote text */}
+                <p style={{
+                  fontFamily: "'Anton','Bebas Neue',sans-serif",
+                  fontSize: 'clamp(22px,2.4vw,34px)',
+                  lineHeight: 1.2,
+                  color: isActive ? 'var(--ink)' : 'var(--ink-dim)',
+                  transition: 'color .5s',
+                  flex: 1,
+                  pointerEvents: 'none',
+                }}>{r.text}</p>
+
+                {/* Footer row */}
+                <div style={{
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                  paddingTop: 20,
+                  borderTop: `1px solid ${isActive ? 'rgba(198,255,0,.25)' : 'var(--line)'}`,
+                  transition: 'border-color .5s',
+                }}>
+                  <span style={{
+                    fontFamily: "'JetBrains Mono',monospace", fontSize: 10,
+                    letterSpacing: '.22em', textTransform: 'uppercase',
+                    color: isActive ? 'var(--accent)' : 'var(--ink-dim)',
+                    transition: 'color .5s',
+                  }}>{r.label}</span>
+                  {isActive && <div className="w-2 h-2 rounded-full bg-accent pulse-dot"/>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Progress pills */}
+      <div className="px-6 md:px-12 mt-8 flex gap-2">
+        {reviews.map((_, i) => (
+          <button key={i} onClick={() => setIdx(i)}
+            style={{
+              height: 3, borderRadius: 99, border: 'none', padding: 0,
+              background: i === idx ? 'var(--accent)' : 'var(--line)',
+              width: i === idx ? 44 : 16,
+
+              cursor: 'pointer',
+            }}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
 // ---------- Process ----------
 const Process = () => {
   const steps = [
@@ -415,7 +582,7 @@ const Process = () => {
   return (
     <section id="process" className="px-6 md:px-12 py-32 border-t border-line">
       <div className="grid md:grid-cols-12 gap-10 mb-20">
-        <div className="md:col-span-2"><div className="eyebrow">(06) — Jarayon</div></div>
+        <div className="md:col-span-2"><div className="eyebrow">(07) — Jarayon</div></div>
         <div className="md:col-span-10 reveal">
           <h2 className="font-display text-5xl md:text-7xl leading-[.95]">To'rt bosqich.<br/>To'siqlarsiz <span className="accent">natija</span>.</h2>
         </div>
@@ -481,7 +648,7 @@ const PricingCard = ({ tier, price, tagline, features, accent: isAccent, idx, un
 const Pricing = () => (
   <section id="pricing" className="px-6 md:px-12 py-32 border-t border-line">
     <div className="grid md:grid-cols-12 gap-10 mb-16">
-      <div className="md:col-span-2"><div className="eyebrow">(06) — Narxlar</div></div>
+      <div className="md:col-span-2"><div className="eyebrow">(08) — Narxlar</div></div>
       <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
         <h2 className="font-display text-5xl md:text-7xl leading-[.95]">Men bilan ishlashning<br/><span className="accent">to'rt yo'li</span>.</h2>
         <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em] max-w-xs">
@@ -583,7 +750,7 @@ const Contact = () => (
     <div className="absolute inset-0 -z-10">
       <div className="mesh-blob absolute" style={{width:600,height:600,right:'-10%',top:'-10%',background:'#C6FF00',opacity:.1,borderRadius:'50%'}}/>
     </div>
-    <div className="eyebrow mb-12">(07) — Bog'lanish</div>
+    <div className="eyebrow mb-12">(09) — Bog'lanish</div>
     <h2 className="font-display leading-[.85] reveal" style={{fontSize:'clamp(64px, 14vw, 260px)'}}>
       Keling, jarangdor<br/>
       <span className="accent">narsa</span> yaratamiz.
@@ -621,4 +788,4 @@ const Footer = () => (
   </footer>
 );
 
-Object.assign(window, { useReveal, Cursor, Nav, Hero, About, Stats, Skills, Work, Clients, Process, Pricing, Contact, Footer });
+Object.assign(window, { useReveal, Cursor, Nav, Hero, About, Stats, Skills, Work, Clients, Testimonials, Process, Pricing, Contact, Footer });
