@@ -95,28 +95,65 @@ const Cursor = () => {
 };
 
 // ---------- Nav ----------
-const Nav = () => (
-  <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 py-5">
-    <div className="font-display text-xl tracking-tight">CREZ<span className="accent">/</span></div>
-    <div className="hidden md:flex items-center gap-8 font-mono text-[11px] uppercase tracking-[.18em] ink-dim">
-      <a href="#work" className="hover:text-[var(--ink)] transition">Ishlar</a>
-      <a href="#about" className="hover:text-[var(--ink)] transition">Men haqimda</a>
-      <a href="#pricing" className="hover:text-[var(--ink)] transition">Narxlar</a>
-      <a href="#contact" className="hover:text-[var(--ink)] transition">Aloqa</a>
-    </div>
-    <div className="hidden md:flex items-center gap-2 font-mono text-[11px] ink-dim">
-      <span className="w-2 h-2 rounded-full bg-[#3CFF7E] pulse-dot"/>
-      <span className="uppercase tracking-[.18em]">Bo'sh vaqt: 2026</span>
-    </div>
-  </nav>
-);
+const Nav = () => {
+  const { lang, setLang, t } = React.useContext(LanguageContext);
+  return (
+    <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 py-5">
+      <div className="font-display text-xl tracking-tight">CREZ<span className="accent">/</span></div>
+      <div className="hidden md:flex items-center gap-8 font-mono text-[11px] uppercase tracking-[.18em] ink-dim">
+        <a href="#work" className="hover:text-[var(--ink)] transition">{t('nav_work')}</a>
+        <a href="#about" className="hover:text-[var(--ink)] transition">{t('nav_about')}</a>
+        <a href="#pricing" className="hover:text-[var(--ink)] transition">{t('nav_pricing')}</a>
+        <a href="#contact" className="hover:text-[var(--ink)] transition">{t('nav_contact')}</a>
+      </div>
+      <div className="flex items-center gap-6">
+        <div className="relative group lang-selector">
+          <button className="flex items-center gap-3 bg-transparent border border-line rounded-full px-4 py-2 font-mono text-[11px] tracking-widest uppercase text-accent hover:border-accent transition-all duration-300">
+            <img 
+              src={`https://flagcdn.com/w20/${lang === 'en' ? 'us' : lang}.png`} 
+              alt={lang} 
+              className="w-4 h-auto rounded-[2px] grayscale-[0.5] group-hover:grayscale-0 transition-all"
+            />
+            <span>{lang}</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className="group-hover:rotate-180 transition-transform duration-300 opacity-60">
+              <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <div className="absolute top-full right-0 mt-2 w-40 bg-[#0E0E0C] border border-line rounded-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-[60] shadow-2xl">
+            {[
+              { id: 'uz', label: 'Uzbek', flag: 'uz' },
+              { id: 'ru', label: 'Russian', flag: 'ru' },
+              { id: 'en', label: 'English', flag: 'us' }
+            ].map((l) => (
+              <div
+                key={l.id}
+                role="button"
+                onClick={() => setLang(l.id)}
+                className={`w-full flex items-center gap-3 px-4 py-3 text-[11px] font-mono uppercase tracking-widest transition-colors cursor-pointer group/item ${lang === l.id ? 'bg-[#C6FF00]/10 text-[#C6FF00]' : 'ink-dim'} hover:bg-[#C6FF00] hover:!text-black`}
+              >
+                <img src={`https://flagcdn.com/w20/${l.flag}.png`} alt={l.id} className="w-4 h-auto rounded-[2px] shrink-0" />
+                <span className="flex-1 text-left font-medium">{l.label}</span>
+                {lang === l.id && <span className="w-1.5 h-1.5 rounded-full bg-accent group-hover/item:bg-black"/>}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="hidden md:flex items-center gap-2 font-mono text-[11px] ink-dim">
+          <span className="w-2 h-2 rounded-full bg-[#3CFF7E] pulse-dot"/>
+          <span className="uppercase tracking-[.18em]">{t('nav_available')}</span>
+        </div>
+      </div>
+    </nav>
+  );
+};
 
 // ---------- Hero ----------
 const Hero = () => {
+  const { t } = React.useContext(LanguageContext);
   const [time, setTime] = React.useState('');
   React.useEffect(()=>{
-    const t = ()=> setTime(new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Tashkent'}) + ' TOSHKENT');
-    t(); const id = setInterval(t,1000); return ()=>clearInterval(id);
+    const tFunc = ()=> setTime(new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Tashkent'}) + ' TOSHKENT');
+    tFunc(); const id = setInterval(tFunc,1000); return ()=>clearInterval(id);
   },[]);
   return (
     <section className="relative min-h-screen flex flex-col justify-end pb-20 pt-32 px-6 md:px-12 overflow-hidden">
@@ -154,7 +191,7 @@ const Hero = () => {
       <div className="reveal">
         <div className="inline-flex items-center gap-2 border border-line rounded-full px-4 py-2 font-mono text-[11px] uppercase tracking-[.18em] mb-8 backdrop-blur">
           <span className="w-2 h-2 rounded-full bg-[#3CFF7E] pulse-dot"/>
-          Tanlangan loyihalar uchun bo'sh — 2026-yil 2-chorak
+          {t('hero_status')}
         </div>
       </div>
 
@@ -166,23 +203,21 @@ const Hero = () => {
       {/* Tagline */}
       <div className="mt-8 grid md:grid-cols-3 gap-6 items-end reveal reveal-delay-2">
         <div className="md:col-span-2">
-          <div className="text-2xl md:text-4xl font-display leading-tight">
-            Motion Designer <span className="accent">×</span> 3D Artist <span className="accent">×</span> Video Editor
-          </div>
+          <div className="text-2xl md:text-4xl font-display leading-tight" dangerouslySetInnerHTML={{__html: t('hero_tagline')}} />
           <div className="ink-dim mt-3 max-w-xl">
-            Muhammadamin — 21 yoshli motion animator
+            {t('hero_sub')}
           </div>
         </div>
         <div className="flex md:justify-end">
           <a href="#work" className="cta-btn group inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[.18em] border border-[var(--ink)] rounded-full px-5 py-3 hover:bg-[var(--ink)] hover:text-black transition">
-            Reelni ko'rish <span className="cta-arrow inline-block">↗</span>
+            {t('hero_cta')} <span className="cta-arrow inline-block">↗</span>
           </a>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[10px] ink-dim">
-        <span className="uppercase tracking-[.22em]">Pastga</span>
+        <span className="uppercase tracking-[.22em]">{t('hero_scroll')}</span>
         <div className="w-[1px] h-10 bg-[var(--line)] relative overflow-hidden">
           <div className="scroll-dot w-[1px] h-3 bg-accent absolute left-0 top-0"/>
         </div>
@@ -193,18 +228,17 @@ const Hero = () => {
 
 // ---------- About ----------
 const About = () => {
+  const { t } = React.useContext(LanguageContext);
   return (
   <section id="about" className="relative px-6 md:px-12 py-32 border-t border-line">
     <div className="grid md:grid-cols-12 gap-10">
       <div className="md:col-span-2 reveal">
-        <div className="eyebrow">(01) — Men haqimda</div>
+        <div className="eyebrow">{t('about_eyebrow')}</div>
       </div>
       <div className="md:col-span-7 reveal reveal-delay-1">
-        <h2 className="font-display text-5xl md:text-7xl leading-[.95]">
-          O'zbekistondan 21 yoshli vizual hikoyachi — g'oyalarni harakatga <span className="accent">aylantiraman</span>.
-        </h2>
+        <h2 className="font-display text-5xl md:text-7xl leading-[.95]" dangerouslySetInnerHTML={{__html: t('about_title')}} />
         <p className="ink-dim text-lg max-w-xl mt-8 leading-relaxed">
-          Men video animator montajorman. Rejissyorlikdan tortib har bir kadrni animatsiya qilishgacha bo‘lgan jarayonni o‘z bo‘ynimga olaman — vizualizatsiyadan tortib yakuniy ishlovgacha. Mening ishlarim tipografiya, tekstura va vaqt uyg‘unligida tug‘iladi.
+          {t('about_body')}
         </p>
       </div>
       <div className="md:col-span-3 reveal reveal-delay-2">
@@ -251,16 +285,19 @@ const Stat = ({ n, suffix, label, delay=0 }) => {
   );
 };
 
-const Stats = () => (
-  <section className="px-6 md:px-12 py-32 border-t border-line">
-    <div className="eyebrow mb-12">(02) — Raqamlarda</div>
-    <div className="grid md:grid-cols-3 gap-12 md:gap-6">
-      <Stat n={2} suffix="+" label="Yillik tajriba" delay={0}/>
-      <Stat n={120} suffix="+" label="Tugallangan loyihalar" delay={150}/>
-      <Stat n={40} suffix="+" label="Mamnun mijozlar" delay={300}/>
-    </div>
-  </section>
-);
+const Stats = () => {
+  const { t } = React.useContext(LanguageContext);
+  return (
+    <section className="px-6 md:px-12 py-32 border-t border-line">
+      <div className="eyebrow mb-12">{t('stats_eyebrow')}</div>
+      <div className="grid md:grid-cols-3 gap-12 md:gap-6">
+        <Stat n={2} suffix="+" label={t('stats_exp')} delay={0}/>
+        <Stat n={120} suffix="+" label={t('stats_projects')} delay={150}/>
+        <Stat n={40} suffix="+" label={t('stats_clients')} delay={300}/>
+      </div>
+    </section>
+  );
+};
 
 // ---------- Skills ----------
 const SkillCard = ({ name, level, kind, idx }) => {
@@ -293,23 +330,26 @@ const SkillCard = ({ name, level, kind, idx }) => {
   );
 };
 
-const Skills = () => (
-  <section className="px-6 md:px-12 py-32 border-t border-line">
-    <div className="grid md:grid-cols-12 gap-10 mb-16">
-      <div className="md:col-span-2"><div className="eyebrow">(03) — Skillar</div></div>
-      <div className="md:col-span-10 reveal">
-        <h2 className="font-display text-5xl md:text-7xl leading-[.95]">Skilllar —<br/><span className="accent">to'liq</span>.</h2>
+const Skills = () => {
+  const { t } = React.useContext(LanguageContext);
+  return (
+    <section className="px-6 md:px-12 py-32 border-t border-line">
+      <div className="grid md:grid-cols-12 gap-10 mb-16">
+        <div className="md:col-span-2"><div className="eyebrow">{t('skills_eyebrow')}</div></div>
+        <div className="md:col-span-10 reveal">
+          <h2 className="font-display text-5xl md:text-7xl leading-[.95]" dangerouslySetInnerHTML={{__html: t('skills_title')}} />
+        </div>
       </div>
-    </div>
-    <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-      <SkillCard name="After Effects" level={95} kind="Compositing" idx={0}/>
-      <SkillCard name="DaVinci Resolve" level={70} kind="Edit · Grade" idx={1}/>
-      <SkillCard name="Blender 3D" level={60} kind="3D · Render" idx={2}/>
-      <SkillCard name="3ds Max" level={60} kind="Modelling" idx={3}/>
-      <SkillCard name="3D Animation" level={50} kind="Discipline" idx={4}/>
-    </div>
-  </section>
-);
+      <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <SkillCard name="After Effects" level={95} kind="Compositing" idx={0}/>
+        <SkillCard name="DaVinci Resolve" level={70} kind="Edit · Grade" idx={1}/>
+        <SkillCard name="Blender 3D" level={60} kind="3D · Render" idx={2}/>
+        <SkillCard name="3ds Max" level={60} kind="Modelling" idx={3}/>
+        <SkillCard name="3D Animation" level={50} kind="Discipline" idx={4}/>
+      </div>
+    </section>
+  );
+};
 
 // ---------- Work / Bento ----------
 const VideoTile = ({ src, title, client, year, category, span = '', large = false }) => (
@@ -331,30 +371,33 @@ const VideoTile = ({ src, title, client, year, category, span = '', large = fals
   </div>
 );
 
-const Work = () => (
-  <section id="work" className="px-6 md:px-12 py-32 border-t border-line">
-    <div className="grid md:grid-cols-12 gap-10 mb-12">
-      <div className="md:col-span-2"><div className="eyebrow">(04) — Tanlangan ishlar</div></div>
-      <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
-        <h2 className="font-display text-5xl md:text-8xl leading-[.92]">Ishlardan<br/><span className="accent">bir parcha</span>.</h2>
-        <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em]">2023 — 2026 / 120 tadan 06 tasi</div>
+const Work = () => {
+  const { t } = React.useContext(LanguageContext);
+  return (
+    <section id="work" className="px-6 md:px-12 py-32 border-t border-line">
+      <div className="grid md:grid-cols-12 gap-10 mb-12">
+        <div className="md:col-span-2"><div className="eyebrow">{t('work_eyebrow')}</div></div>
+        <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
+          <h2 className="font-display text-5xl md:text-8xl leading-[.92]" dangerouslySetInnerHTML={{__html: t('work_title')}} />
+          <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em]">{t('work_sub')}</div>
+        </div>
       </div>
-    </div>
 
-    <div className="grid grid-cols-12 gap-4 auto-rows-[140px]">
-      <VideoTile src="605-Branding.mp4" title="605 Brand Reel" client="605 Agency" year="’25" category="Brend rili" span="col-span-12 md:col-span-6 row-span-2 md:row-span-3" large/>
-      <VideoTile src="AQO6sWjMKyvkrzRrw8z_VJVBxvMMbml4OYmeMZr3Gmuhn8uSrM86d87nedZmd_h.mp4" title="Yusuf Inspire Motion" client="@yusuf.inspire" year="’24" category="Motion Design" span="col-span-12 md:col-span-6 row-span-2 md:row-span-3" large/>
-      
-      <VideoTile src="4-mefortg.mp4" title="Odilbekova Promo" client="@odilbekovva" year="’24" category="Instagram Reel" span="col-span-6 md:col-span-3 row-span-4"/>
-      <VideoTile src="AQNBGsao1FSHXxlFW7_cs26nRF_ig4DV5jeRUEabyqe5Ep0qpEhhYOAqllXjiAD.mp4" title="Yusuf Inspire Reel" client="@yusuf.inspire" year="’24" category="Reel" span="col-span-6 md:col-span-3 row-span-4"/>
-      <VideoTile src="AQO8jSCn4cGbejgB6EXSnY3SNBQaExPjyQbyaKmwd9jTsOcHXkk0wJL6yZFmmu8.mp4" title="Millat Umidi Promo" client="Millat Umidi Univ." year="’24" category="Motion Video" span="col-span-6 md:col-span-3 row-span-4"/>
-      <VideoTile src="SaveInta_com_AQNnbdIG6N4a2qw9wjt12F87bm_I2jTXSkpfGSUl6Q_YENrVBGDvSGpnPqNY8tT.mp4" title="Millat Umidi Reel" client="Millat Umidi Univ." year="’24" category="Promo" span="col-span-6 md:col-span-3 row-span-4"/>
-    </div>
-  </section>
-);
+      <div className="grid grid-cols-12 gap-4 auto-rows-[140px]">
+        <VideoTile src="605-Branding.mp4" title="605 Brand Reel" client="605 Agency" year="’25" category={t('cat_brand_reel')} span="col-span-12 md:col-span-6 row-span-2 md:row-span-3" large/>
+        <VideoTile src="AQO6sWjMKyvkrzRrw8z_VJVBxvMMbml4OYmeMZr3Gmuhn8uSrM86d87nedZmd_h.mp4" title="Yusuf Inspire Motion" client="@yusuf.inspire" year="’24" category={t('cat_motion_design')} span="col-span-12 md:col-span-6 row-span-2 md:row-span-3" large/>
+        
+        <VideoTile src="4-mefortg.mp4" title="Odilbekova Promo" client="@odilbekovva" year="’24" category={t('cat_ig_reel')} span="col-span-6 md:col-span-3 row-span-4"/>
+        <VideoTile src="AQNBGsao1FSHXxlFW7_cs26nRF_ig4DV5jeRUEabyqe5Ep0qpEhhYOAqllXjiAD.mp4" title="Yusuf Inspire Reel" client="@yusuf.inspire" year="’24" category={t('cat_reel')} span="col-span-6 md:col-span-3 row-span-4"/>
+        <VideoTile src="AQO8jSCn4cGbejgB6EXSnY3SNBQaExPjyQbyaKmwd9jTsOcHXkk0wJL6yZFmmu8.mp4" title="Millat Umidi Promo" client="Millat Umidi Univ." year="’24" category={t('cat_motion_video')} span="col-span-6 md:col-span-3 row-span-4"/>
+        <VideoTile src="SaveInta_com_AQNnbdIG6N4a2qw9wjt12F87bm_I2jTXSkpfGSUl6Q_YENrVBGDvSGpnPqNY8tT.mp4" title="Millat Umidi Reel" client="Millat Umidi Univ." year="’24" category={t('cat_promo')} span="col-span-6 md:col-span-3 row-span-4"/>
+      </div>
+    </section>
+  );
+};
 
 // ---------- Clients Logo Wall ----------
-const ClientLogo = ({ name, kind, year, idx }) => (
+const ClientLogo = ({ name, kind, year, idx, label }) => (
   <div className="reveal group relative border-r border-b border-line p-8 md:p-10 min-h-[180px] flex flex-col justify-between transition-colors duration-500 hover:bg-[var(--accent)] hover:text-black overflow-hidden"
        style={{transitionDelay:`${idx*60}ms`}}>
     <div className="flex justify-between font-mono text-[10px] uppercase tracking-[.22em] opacity-60">
@@ -364,7 +407,7 @@ const ClientLogo = ({ name, kind, year, idx }) => (
     <div className="font-display text-3xl md:text-5xl leading-[.95]">{name}</div>
     <div className="flex justify-between items-end font-mono text-[10px] uppercase tracking-[.22em]">
       <span className="opacity-60">{kind}</span>
-      <span className="opacity-0 group-hover:opacity-100 transition-opacity">↗ Birga ishlangan</span>
+      <span className="opacity-0 group-hover:opacity-100 transition-opacity">↗ {label}</span>
     </div>
     {/* corner mark */}
     <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-accent group-hover:bg-black transition-colors"/>
@@ -372,32 +415,31 @@ const ClientLogo = ({ name, kind, year, idx }) => (
 );
 
 const Clients = () => {
+  const { t } = React.useContext(LanguageContext);
   const brands = [
-    { name:'Honor Uzbekistan', kind:'Mahsulot Viz · 3D', year:'’25' },
-    { name:'Pepsi',            kind:'Reklama · Ril', year:'’24' },
-    { name:'Lipton',           kind:'Logotip animatsiyasi',   year:'’24' },
-    { name:'605 Agency',       kind:'Brend rili',       year:'’25' },
-    { name:'Bloger Agency',    kind:'VFX · Montaj',       year:'’25' },
-    { name:'Bashkent',         kind:'3D Ident',         year:'’24' },
-    { name:'Millat Umidi Univ.', kind:'Ovoz · Montaj',   year:'’23' },
-    { name:'TAFU',             kind:'VFX · Promo',      year:'’23' },
+    { name:'Honor Uzbekistan', kind:t('kind_product_viz'), year:'’25' },
+    { name:'Pepsi',            kind:t('kind_ad_reel'), year:'’24' },
+    { name:'Lipton',           kind:t('kind_logo_anim'),   year:'’24' },
+    { name:'605 Agency',       kind:t('kind_brand_reel'),       year:'’25' },
+    { name:'Bloger Agency',    kind:t('kind_vfx_edit'),       year:'’25' },
+    { name:'Bashkent',         kind:t('kind_3d_ident'),         year:'’24' },
+    { name:'Millat Umidi Univ.', kind:t('kind_audio_edit'),   year:'’23' },
+    { name:'TAFU',             kind:t('kind_vfx_promo'),      year:'’23' },
   ];
   return (
     <section className="px-6 md:px-12 py-32 border-t border-line">
       <div className="grid md:grid-cols-12 gap-10 mb-16">
-        <div className="md:col-span-2"><div className="eyebrow">(05) — Hamkorlar</div></div>
+        <div className="md:col-span-2"><div className="eyebrow">{t('clients_eyebrow')}</div></div>
         <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
-          <h2 className="font-display text-5xl md:text-7xl leading-[.95]">
-            Montajga<br/>ishongan <span className="accent">brendlar</span>.
-          </h2>
+          <h2 className="font-display text-5xl md:text-7xl leading-[.95]" dangerouslySetInnerHTML={{__html: t('clients_title')}} />
           <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em] max-w-xs">
-            O'zbekiston bo'ylab 40+ mijozlar — film, brend, ta'lim, agentliklar
+            {t('clients_sub')}
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 border-t border-l border-line">
-        {brands.map((b,i)=>(<ClientLogo key={b.name} {...b} idx={i}/>))}
+        {brands.map((b,i)=>(<ClientLogo key={b.name} {...b} idx={i} label={t('clients_collab')}/>))}
       </div>
     </section>
   );
@@ -405,11 +447,12 @@ const Clients = () => {
 
 // ---------- Testimonials ----------
 const Testimonials = () => {
+  const { t } = React.useContext(LanguageContext);
   const reviews = [
-    { text: "manam xursandman siz bilan ishlaganimdan, kutganimdan ancha yaxshi narsa qilib berayabsiz", label: "MIJOZ 01" },
-    { text: "Raxmat bro, ishlariz Juda yoqayabdi, Juda zo'r", label: "MIJOZ 02" },
-    { text: "Siz bilan ishlab mazza qildim! shu vaqtgacha xech qaysi montajor bilan bunaqa ishlanagan edim, raxmat", label: "MIJOZ 03" },
-    { text: "Ishlariz darajasi boshqacha ekan, bunaqa sifat kutmagandim. Juda professional ishlayabsi, respect.", label: "MIJOZ 04" },
+    { text: t('review_1'), label: "@konaf" },
+    { text: t('review_2'), label: "@odilbekovva" },
+    { text: t('review_3'), label: "@keykomania" },
+    { text: t('review_4'), label: "BRIGHT MARKETING" },
   ];
   const [idx, setIdx] = React.useState(0);
   const [dragStart, setDragStart] = React.useState(null);
@@ -422,8 +465,8 @@ const Testimonials = () => {
 
   React.useEffect(() => {
     if (dragStart !== null) return;
-    const t = setInterval(() => setIdx(c => (c + 1) % n), 4500);
-    return () => clearInterval(t);
+    const tFunc = setInterval(() => setIdx(c => (c + 1) % n), 4500);
+    return () => clearInterval(tFunc);
   }, [dragStart, n]);
 
   const getX = (e) => e.clientX ?? e.touches?.[0]?.clientX ?? 0;
@@ -445,11 +488,9 @@ const Testimonials = () => {
     <section id="testimonials" className="py-32 border-t border-line overflow-hidden">
       {/* Header */}
       <div className="px-6 md:px-12 grid md:grid-cols-12 gap-10 mb-14">
-        <div className="md:col-span-2"><div className="eyebrow">(06) — Mijozlar fikri</div></div>
+        <div className="md:col-span-2"><div className="eyebrow">{t('testimonials_eyebrow')}</div></div>
         <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
-          <h2 className="font-display text-5xl md:text-7xl leading-[.95]">
-            Mijozlar nima <span className="accent">deydi?</span>
-          </h2>
+          <h2 className="font-display text-5xl md:text-7xl leading-[.95]" dangerouslySetInnerHTML={{__html: t('testimonials_title')}} />
           <div className="flex items-center gap-5">
             <span className="font-mono text-[11px] ink-dim tracking-[.18em] uppercase">
               <span className="accent">{String(idx+1).padStart(2,'0')}</span> / {String(n).padStart(2,'0')}
@@ -573,18 +614,19 @@ const Testimonials = () => {
 
 // ---------- Process ----------
 const Process = () => {
+  const { t } = React.useContext(LanguageContext);
   const steps = [
-    {n:'01', title:'Brif', body:'Eshitish, tahlil qilish va hikoyamiz hamda u qoldirishi kerak bo\'lgan his-tuyg\'ularni aniqlash.'},
-    {n:'02', title:'Konsept', body:'Mudbordlar, storibordlar, tipografik tadqiqotlar. Birorta kadr render bo\'lishidan oldin yo\'nalishni tasdiqlaymiz.'},
-    {n:'03', title:'Produksiya', body:'Modellashtirish, animatsiya, suratga olish va kompoziting. Kunlik hisobotlar, montajda kutilmagan sovg\'alar bo\'lmaydi.'},
-    {n:'04', title:'Yetkazib berish', body:'Rang, ovoz, yakuniy natija — kampaniyangizga kerakli barcha formatlarda eksport qilinadi.'},
+    {n:'01', title:t('process_step_01_title'), body:t('process_step_01_body')},
+    {n:'02', title:t('process_step_02_title'), body:t('process_step_02_body')},
+    {n:'03', title:t('process_step_03_title'), body:t('process_step_03_body')},
+    {n:'04', title:t('process_step_04_title'), body:t('process_step_04_body')},
   ];
   return (
     <section id="process" className="px-6 md:px-12 py-32 border-t border-line">
       <div className="grid md:grid-cols-12 gap-10 mb-20">
-        <div className="md:col-span-2"><div className="eyebrow">(07) — Jarayon</div></div>
+        <div className="md:col-span-2"><div className="eyebrow">{t('process_eyebrow')}</div></div>
         <div className="md:col-span-10 reveal">
-          <h2 className="font-display text-5xl md:text-7xl leading-[.95]">To'rt bosqich.<br/>To'siqlarsiz <span className="accent">natija</span>.</h2>
+          <h2 className="font-display text-5xl md:text-7xl leading-[.95]" dangerouslySetInnerHTML={{__html: t('process_title')}} />
         </div>
       </div>
 
@@ -600,7 +642,7 @@ const Process = () => {
                 <div className="w-6 h-6 rounded-full bg-accent relative">
                   <div className="absolute inset-0 rounded-full bg-accent" style={{animation:'pulse-dot 2s infinite'}}/>
                 </div>
-                <div className="font-mono text-[11px] ink-dim">QADAM {s.n}</div>
+                <div className="font-mono text-[11px] ink-dim">STEP {s.n}</div>
               </div>
               <div className="font-display text-4xl md:text-5xl leading-[.95]">{s.title}</div>
               <p className="ink-dim mt-4 leading-relaxed">{s.body}</p>
@@ -613,7 +655,7 @@ const Process = () => {
 };
 
 // ---------- Pricing ----------
-const PricingCard = ({ tier, price, tagline, features, accent: isAccent, idx, unit = 'reels' }) => (
+const PricingCard = ({ tier, price, tagline, features, accent: isAccent, idx, unit = 'reels', ctaLabel }) => (
   <div className={`reveal relative rounded-2xl p-6 md:p-8 border ${isAccent ? 'border-[var(--accent)]' : 'border-line'} overflow-hidden tilt`}
        style={{transitionDelay:`${idx*120}ms`, background: isAccent ? 'linear-gradient(180deg, rgba(198,255,0,.08), transparent)' : 'linear-gradient(180deg, rgba(255,255,255,.02), transparent)'}}>
     {isAccent && (
@@ -639,92 +681,99 @@ const PricingCard = ({ tier, price, tagline, features, accent: isAccent, idx, un
        className={`cta-btn group inline-flex items-center justify-between w-full mt-10 font-mono text-[11px] uppercase tracking-[.18em] rounded-full px-6 py-4 transition ${
          isAccent ? 'bg-accent text-black hover:bg-transparent hover:text-[var(--accent)] border border-accent' : 'border border-[var(--ink)] hover:bg-[var(--ink)] hover:text-black'
        }`}>
-      <span>{tier} buyurtma berish</span>
+      <span>{tier} {ctaLabel}</span>
       <span className="cta-arrow inline-block">↗</span>
     </a>
   </div>
 );
 
-const Pricing = () => (
-  <section id="pricing" className="px-6 md:px-12 py-32 border-t border-line">
-    <div className="grid md:grid-cols-12 gap-10 mb-16">
-      <div className="md:col-span-2"><div className="eyebrow">(08) — Narxlar</div></div>
-      <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
-        <h2 className="font-display text-5xl md:text-7xl leading-[.95]">Men bilan ishlashning<br/><span className="accent">to'rt yo'li</span>.</h2>
-        <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em] max-w-xs">
-          Ruxsat etilgan narxlar · 100% oldindan to'lov · Tuzatishlar kiritilgan
+const Pricing = () => {
+  const { t } = React.useContext(LanguageContext);
+  return (
+    <section id="pricing" className="px-6 md:px-12 py-32 border-t border-line">
+      <div className="grid md:grid-cols-12 gap-10 mb-16">
+        <div className="md:col-span-2"><div className="eyebrow">{t('pricing_eyebrow')}</div></div>
+        <div className="md:col-span-10 reveal flex flex-wrap items-end justify-between gap-6">
+          <h2 className="font-display text-5xl md:text-7xl leading-[.95]" dangerouslySetInnerHTML={{__html: t('pricing_title')}} />
+          <div className="font-mono text-[11px] ink-dim uppercase tracking-[.18em] max-w-xs">
+            {t('pricing_sub')}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <PricingCard
-        tier="Standart"
-        price="25"
-        tagline="Ijtimoiy tarmoqlar, logotip animatsiyalari va qisqa rillar uchun tezkor yechim. Bitta topshiriq uchun ideal."
-        features={[
-          '1 minutgacha bo\'lgan video',
-          '1 ta konsept yo\'nalishi',
-          '2 marta tuzatish kiritish',
-          '1080p · MP4 + MOV eksport',
-          'Tayyor bo\'lish muddati: 1 kun',
-          'Mualliflik huquqisiz musiqa',
-        ]}
-        idx={0}
-      />
-      <PricingCard
-        tier="Premium"
-        price="35"
-        tagline="To'liq kreativ ishlab chiqarish — 3D, brend-rillar, reklamalar. Konseptdan yetkazib berishgacha."
-        accent
-        features={[
-          '1.5 minutgacha video / 3D',
-          'Tanlash uchun 2 ta konsept yo\'nalishi',
-          'Cheksiz tuzatishlar',
-          '4K · barcha o\'lchamlarda (16:9 · 9:16 · 1:1)',
-          'Sound dizayn + individual rang berish',
-          'Asl fayllar (.aep / .blend) taqdim etiladi (xohishiy)',
-          'Navbatdan tashqari: 1 kunda tayyor',
-        ]}
-        idx={1}
-      />
-      <PricingCard
-        tier="YouTube"
-        price="80"
-        unit="video"
-        tagline="Uzun formatli videolar uchun professional montaj va motion dizayn. (Narxlar vaziyatga qarab o'zgaradi)"
-        features={[
-          '15 minutgacha bo\'lgan video',
-          'O\'rtacha darajadagi motion',
-          'Professional montaj va rang',
-          'Mavzuga mos animatsiyalar',
-          'Tayyor bo\'lish: Kelishiladi',
-        ]}
-        idx={2}
-      />
-      <PricingCard
-        tier="Promo"
-        price="100"
-        unit="rolik"
-        tagline="To'liq metrajli professional promo roliklar — brendingiz uchun eng yuqori sifat. (Narxlar vaziyatga qarab o'zgaradi)"
-        features={[
-          'Full motion dizayn',
-          '1-2 haftada tayyor bo\'ladi',
-          'Professional sound dizayn',
-          'To\'liq dizaynerlik ishi',
-          '10 tagacha tuzatish kiritish',
-          'Premium sifat va yondashuv',
-        ]}
-        idx={3}
-      />
-    </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <PricingCard
+          tier={t('pricing_standard_tier')}
+          price="25"
+          tagline={t('pricing_standard_tagline')}
+          features={[
+            t('pricing_standard_f1'),
+            t('pricing_standard_f2'),
+            t('pricing_standard_f3'),
+            t('pricing_standard_f4'),
+            t('pricing_standard_f5'),
+            t('pricing_standard_f6'),
+          ]}
+          idx={0}
+          ctaLabel={t('pricing_cta')}
+        />
+        <PricingCard
+          tier={t('pricing_premium_tier')}
+          price="40"
+          tagline={t('pricing_premium_tagline')}
+          accent
+          features={[
+            t('pricing_premium_f1'),
+            t('pricing_premium_f2'),
+            t('pricing_premium_f3'),
+            t('pricing_premium_f4'),
+            t('pricing_premium_f5'),
+            t('pricing_premium_f6'),
+            t('pricing_premium_f7'),
+          ]}
+          idx={1}
+          ctaLabel={t('pricing_cta')}
+        />
+        <PricingCard
+          tier={t('pricing_youtube_tier')}
+          price="80"
+          unit="video"
+          tagline={t('pricing_youtube_tagline')}
+          features={[
+            t('pricing_youtube_f1'),
+            t('pricing_youtube_f2'),
+            t('pricing_youtube_f3'),
+            t('pricing_youtube_f4'),
+            t('pricing_youtube_f5'),
+          ]}
+          idx={2}
+          ctaLabel={t('pricing_cta')}
+        />
+        <PricingCard
+          tier={t('pricing_promo_tier')}
+          price="100"
+          unit="rolik"
+          tagline={t('pricing_promo_tagline')}
+          features={[
+            t('pricing_promo_f1'),
+            t('pricing_promo_f2'),
+            t('pricing_promo_f3'),
+            t('pricing_promo_f4'),
+            t('pricing_promo_f5'),
+            t('pricing_promo_f6'),
+          ]}
+          idx={3}
+          ctaLabel={t('pricing_cta')}
+        />
+      </div>
 
-    <div className="mt-10 reveal flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] ink-dim uppercase tracking-[.18em] border-t border-line pt-6">
-      <div>Kattaroq loyihangiz bormi? — To'liq kampaniyalar uchun individual taklif.</div>
-      <a href="#contact" className="hover:text-[var(--accent)] transition">Individual narxni bilish ↗</a>
-    </div>
-  </section>
-);
+      <div className="mt-10 reveal flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] ink-dim uppercase tracking-[.18em] border-t border-line pt-6">
+        <div>{t('pricing_footer')}</div>
+        <a href="#contact" className="hover:text-[var(--accent)] transition">{t('pricing_individual')} ↗</a>
+      </div>
+    </section>
+  );
+};
 const MagneticLink = ({ children, href }) => {
   const ref = React.useRef(null);
   const onMove = (e)=>{
@@ -745,47 +794,50 @@ const MagneticLink = ({ children, href }) => {
   );
 };
 
-const Contact = () => (
-  <section id="contact" className="relative px-6 md:px-12 py-32 border-t border-line overflow-hidden">
-    <div className="absolute inset-0 -z-10">
-      <div className="mesh-blob absolute" style={{width:600,height:600,right:'-10%',top:'-10%',background:'#C6FF00',opacity:.1,borderRadius:'50%'}}/>
-    </div>
-    <div className="eyebrow mb-12">(09) — Bog'lanish</div>
-    <h2 className="font-display leading-[.85] reveal" style={{fontSize:'clamp(64px, 14vw, 260px)'}}>
-      Keling, jarangdor<br/>
-      <span className="accent">narsa</span> yaratamiz.
-    </h2>
+const Contact = () => {
+  const { t } = React.useContext(LanguageContext);
+  return (
+    <section id="contact" className="relative px-6 md:px-12 py-32 border-t border-line overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <div className="mesh-blob absolute" style={{width:600,height:600,right:'-10%',top:'-10%',background:'#C6FF00',opacity:.1,borderRadius:'50%'}}/>
+      </div>
+      <div className="eyebrow mb-12">{t('contact_eyebrow')}</div>
+      <h2 className="font-display leading-[.85] reveal" style={{fontSize:'clamp(64px, 14vw, 260px)'}} dangerouslySetInnerHTML={{__html: t('contact_title')}} />
 
-    <div className="grid md:grid-cols-12 gap-10 mt-20">
-      <div className="md:col-span-7 reveal reveal-delay-1">
-        <div className="eyebrow mb-6">Kanallar</div>
-        <div className="space-y-5">
-          <MagneticLink href="mailto:salyamovcrez@gmail.com">salyamovcrez@gmail.com</MagneticLink><br/>
-          <MagneticLink href="https://instagram.com/salyamov_vd">@salyamov_vd — Instagram</MagneticLink><br/>
-          <MagneticLink href="https://t.me/crez_vd">@crez_vd — Telegram</MagneticLink>
+      <div className="grid md:grid-cols-12 gap-10 mt-20">
+        <div className="md:col-span-7 reveal reveal-delay-1">
+          <div className="eyebrow mb-6">{t('contact_channels')}</div>
+          <div className="space-y-5">
+            <MagneticLink href="mailto:salyamovcrez@gmail.com">salyamovcrez@gmail.com</MagneticLink><br/>
+            <MagneticLink href="https://instagram.com/salyamov_vd">@salyamov_vd — Instagram</MagneticLink><br/>
+            <MagneticLink href="https://t.me/crez_vd">@crez_vd — Telegram</MagneticLink>
+          </div>
+        </div>
+        <div className="md:col-span-5 reveal reveal-delay-2">
+          <div className="eyebrow mb-6">{t('contact_studio')}</div>
+          <div className="space-y-3 ink-dim leading-relaxed">
+            <div>Tashkent, Uzbekistan</div>
+            <div>UTC +05:00</div>
+            <div className="ink">{t('contact_services')}</div>
+          </div>
+          <a href="https://t.me/crez_vd" className="cta-btn group inline-flex items-center gap-3 mt-10 font-mono text-[11px] uppercase tracking-[.18em] border border-accent rounded-full px-6 py-4 bg-accent text-black hover:bg-transparent hover:text-[var(--accent)] transition">
+            {t('contact_cta')} <span className="cta-arrow inline-block">↗</span>
+          </a>
         </div>
       </div>
-      <div className="md:col-span-5 reveal reveal-delay-2">
-        <div className="eyebrow mb-6">Studiya</div>
-        <div className="space-y-3 ink-dim leading-relaxed">
-          <div>Tashkent, Uzbekistan</div>
-          <div>UTC +05:00</div>
-          <div className="ink">Mavjud xizmatlar: brend filmlari, 3D reklamalar, logotip tizimlari, motion identika, post-produksiya.</div>
-        </div>
-        <a href="https://t.me/crez_vd" className="cta-btn group inline-flex items-center gap-3 mt-10 font-mono text-[11px] uppercase tracking-[.18em] border border-accent rounded-full px-6 py-4 bg-accent text-black hover:bg-transparent hover:text-[var(--accent)] transition">
-          Loyihani boshlash <span className="cta-arrow inline-block">↗</span>
-        </a>
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
-const Footer = () => (
-  <footer className="px-6 md:px-12 py-10 border-t border-line flex flex-wrap justify-between items-center gap-4 font-mono text-[11px] ink-dim uppercase tracking-[.18em]">
-    <div>© CREZ Studio 2023 — 2026</div>
-    <div className="font-display text-3xl ink">CREZ<span className="accent">/</span></div>
-    <div>E'tibor bilan kodlangan · Toshkent ◐ UZ</div>
-  </footer>
-);
+const Footer = () => {
+  const { t } = React.useContext(LanguageContext);
+  return (
+    <footer className="px-6 md:px-12 py-10 border-t border-line flex flex-wrap justify-between items-center gap-4 font-mono text-[11px] ink-dim uppercase tracking-[.18em]">
+      <div>{t('footer_copy')}</div>
+      <div className="font-display text-3xl ink">CREZ<span className="accent">/</span></div>
+      <div>{t('footer_sub')}</div>
+    </footer>
+  );
+};
 
 Object.assign(window, { useReveal, Cursor, Nav, Hero, About, Stats, Skills, Work, Clients, Testimonials, Process, Pricing, Contact, Footer });

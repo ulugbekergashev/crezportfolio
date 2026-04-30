@@ -1,7 +1,15 @@
 // Main app
 useReveal; // ensure parsed
 
+const LanguageContext = React.createContext();
+
 const App = () => {
+  const [lang, setLang] = React.useState('uz');
+  
+  const t = (key) => {
+    return window.dict[lang][key] || key;
+  };
+
   useReveal();
   // Smooth-scroll for anchor links
   React.useEffect(()=>{
@@ -16,8 +24,11 @@ const App = () => {
     document.addEventListener('click', onClick);
     return ()=>document.removeEventListener('click', onClick);
   },[]);
+
+  const value = { lang, setLang, t };
+
   return (
-    <>
+    <LanguageContext.Provider value={value}>
       <Cursor/>
       <Nav/>
       <main>
@@ -32,8 +43,11 @@ const App = () => {
         <Contact/>
         <Footer/>
       </main>
-    </>
+    </LanguageContext.Provider>
   );
 };
+
+// Export context for components
+window.LanguageContext = LanguageContext;
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
